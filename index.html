@@ -111,7 +111,7 @@
   reconnectPeriod: 1000, // Coba reconnect setiap 1 detik jika koneksi terputus
 };
       const topicLampuTidur = "esp01/relay/device1";
-      const topicLampuUtama = "esp01/relay/decove1";
+      const topicLampuUtama = "esp01/relay/device1";
       const client = mqtt.connect(brokerUrl, options);
 
       client.on("connect", () => {
