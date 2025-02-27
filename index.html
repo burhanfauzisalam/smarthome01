@@ -15,8 +15,6 @@
       rel="stylesheet"
     />
 
-    <link rel="icon" type="image/png" href="favicon.png">
-
     <style>
       body {
         font-family: "Oswald", sans-serif;
@@ -135,8 +133,8 @@
         password: "CahayaUtara2020", // Ganti dengan password HiveMQ-mu
         reconnectPeriod: 1000, // Coba reconnect setiap 1 detik jika koneksi terputus
       };
-      const topicLampuTidur = "esp01/relay/device1";
-      const topicLampuUtama = "esp01/relay/device1";
+      const topicLampuTidur = "esp01/relay/device01";
+      const topicLampuUtama = "esp01/relay/device01";
       const client = mqtt.connect(brokerUrl, options);
 
       client.on("connect", () => {
