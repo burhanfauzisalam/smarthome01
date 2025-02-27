@@ -80,6 +80,7 @@
           <hr />
           <p><strong>Device ID:</strong> <span id="device-id">-</span></p>
           <p id="device-owner"><strong>Owner:</strong> Burhan</p>
+          <p><strong>Status:</strong> <span id="status">-</span></p>
         </div>
       </div>
     </div>
@@ -122,6 +123,7 @@
     <script>
       const deviceID = "device1";
       const deviceId = document.getElementById("device-id");
+      const statusElement = document.getElementById("status");
 
       deviceId.textContent = `${deviceID}`;
 
@@ -135,10 +137,17 @@
       };
       const topicLampuTidur = "esp01/relay/device01";
       const topicLampuUtama = "esp01/relay/device01";
+      const topicStatus = "esp01/status/device01"; // Tambahkan topik status
+
       const client = mqtt.connect(brokerUrl, options);
 
       client.on("connect", () => {
         console.log("Connected to MQTT Broker");
+        client.subscribe(topicStatus, { qos: 1 }, (err) => {
+          if (!err) {
+            console.log(`Subscribed to topic: ${topicStatus}`);
+          }
+        });
       });
 
       client.on("error", (err) => {
@@ -192,6 +201,17 @@
 
         console.log(`Published: ${deviceState1} to topic: ${topicLampuUtama}`);
       }
+
+      // Event handler untuk menerima pesan MQTT
+      client.on("message", (topic, message) => {
+        if (topic === topicStatus) {
+          const statusMessage = message.toString();
+          console.log(`Received status update: ${statusMessage}`);
+
+          // Perbarui elemen status
+          statusElement.textContent = statusMessage;
+        }
+      });
     </script>
   </body>
 </html>
