@@ -44,9 +44,18 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container">
-        <a class="navbar-brand" href="#"><strong><img src="./iot.png" width="50" /></strong></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <a class="navbar-brand" href="#"
+          ><strong><img src="./iot.png" width="50" /></strong
+        ></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -80,14 +89,22 @@
       <div class="row justify-content-center">
         <div class="col-auto text-center">
           <p>Lampu Tidur</p>
-          <button id="toggle-button" class="btn btn-primary btn-lg" onclick="toggleControl()">
+          <button
+            id="toggle-button"
+            class="btn btn-primary btn-lg"
+            onclick="toggleControl()"
+          >
             TURN ON
           </button>
         </div>
 
         <div class="col-auto text-center">
           <p>Lampu Utama</p>
-          <button id="toggle-button1" class="btn btn-primary btn-lg" onclick="toggleControl1()">
+          <button
+            id="toggle-button1"
+            class="btn btn-primary btn-lg"
+            onclick="toggleControl1()"
+          >
             TURN ON
           </button>
         </div>
@@ -103,15 +120,21 @@
     <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 
     <script>
+      const deviceID = "device1";
+      const deviceId = document.getElementById("device-id");
+
+      deviceId.textContent = `${deviceID}`;
+
       // MQTT Configuration
-      const brokerUrl = "wss://090cd3b5566041ae929bfd1b7420f5b1.s1.eu.hivemq.cloud:8884/mqtt"; // Ganti dengan broker MQTT-mu
+      const brokerUrl =
+        "wss://090cd3b5566041ae929bfd1b7420f5b1.s1.eu.hivemq.cloud:8884/mqtt"; // Ganti dengan broker MQTT-mu
       const options = {
-  username: "burhan", // Ganti dengan username HiveMQ-mu
-  password: "CahayaUtara2020", // Ganti dengan password HiveMQ-mu
-  reconnectPeriod: 1000, // Coba reconnect setiap 1 detik jika koneksi terputus
-};
+        username: "burhan", // Ganti dengan username HiveMQ-mu
+        password: "CahayaUtara2020", // Ganti dengan password HiveMQ-mu
+        reconnectPeriod: 1000, // Coba reconnect setiap 1 detik jika koneksi terputus
+      };
       const topicLampuTidur = "esp01/relay/device1";
-      const topicLampuUtama = "esp01/relay/device1";
+      const topicLampuUtama = "esp01/relay/decove1";
       const client = mqtt.connect(brokerUrl, options);
 
       client.on("connect", () => {
@@ -135,22 +158,37 @@
 
         client.publish(topicLampuTidur, deviceState, { qos: 1 });
 
-        toggleButton.textContent = deviceState === "RELAY2_ON" ? "TURN OFF" : "TURN ON";
-        toggleButton.classList.toggle("btn-danger", deviceState === "RELAY2_ON");
-        toggleButton.classList.toggle("btn-primary", deviceState === "RELAY2_OFF");
+        toggleButton.textContent =
+          deviceState === "RELAY2_ON" ? "TURN OFF" : "TURN ON";
+        toggleButton.classList.toggle(
+          "btn-danger",
+          deviceState === "RELAY2_ON"
+        );
+        toggleButton.classList.toggle(
+          "btn-primary",
+          deviceState === "RELAY2_OFF"
+        );
 
         console.log(`Published: ${deviceState} to topic: ${topicLampuTidur}`);
       }
 
       // Toggle Lampu Utama
       function toggleControl1() {
-        deviceState1 = deviceState1 === "SERVO_OPEN" ? "SERVO_CLOSE" : "SERVO_OPEN";
+        deviceState1 =
+          deviceState1 === "SERVO_OPEN" ? "SERVO_CLOSE" : "SERVO_OPEN";
 
         client.publish(topicLampuUtama, deviceState1, { qos: 1 });
 
-        toggleButton1.textContent = deviceState1 === "SERVO_OPEN" ? "TURN OFF" : "TURN ON";
-        toggleButton1.classList.toggle("btn-danger", deviceState1 === "SERVO_OPEN");
-        toggleButton1.classList.toggle("btn-primary", deviceState1 === "SERVO_CLOSE");
+        toggleButton1.textContent =
+          deviceState1 === "SERVO_OPEN" ? "TURN OFF" : "TURN ON";
+        toggleButton1.classList.toggle(
+          "btn-danger",
+          deviceState1 === "SERVO_OPEN"
+        );
+        toggleButton1.classList.toggle(
+          "btn-primary",
+          deviceState1 === "SERVO_CLOSE"
+        );
 
         console.log(`Published: ${deviceState1} to topic: ${topicLampuUtama}`);
       }
